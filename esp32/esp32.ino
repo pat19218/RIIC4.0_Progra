@@ -18,6 +18,8 @@
 //************************************************************************************************
 // Variables globales
 //************************************************************************************************
+byte val = 160;
+
 // SSID & Password
 const char* ssid = "tacu´s wifi";  // Enter SSID here
 const char* password = "12345678";  //Enter Password here
@@ -65,7 +67,7 @@ void loop() {
 
   server.handleClient(); // escuchar solicitudes de clientes
 
-  server.send(200, "text/html", SendHTML()); //responde con un OK (200) y envía HTML
+  server.send(200, "text/html", SendHTML(val,24.3,val,val)); //responde con un OK (200) y envía HTML
 
 }
 //************************************************************************************************
@@ -79,19 +81,20 @@ void handle_OnConnect() {
 //************************************************************************************************
 void handle_8on() {
   Serial.println("Espacio disponibles: 8");
-  server.send(200, "text/html", SendHTML()); //responde con un OK (200) y envía HTML
+  float temp = 24.6;
+  server.send(200, "text/html", SendHTML(val,temp,val,val)); //responde con un OK (200) y envía HTML
 }
 
 //************************************************************************************************
 // Procesador de HTML
 //************************************************************************************************
-String SendHTML(void) {
+String SendHTML(byte aire, float tempt, byte level, byte humedad) {
   String ptr = "<!DOCTYPE html> <html>\n";
   ptr += " <html>\n";
   ptr += " <head>\n";
   ptr += " <meta charset=\"utf-8\">\n";
   ptr += " <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n";
-  ptr += "<title> YAIMA, RIIC 4.0 </title>\n";
+  ptr += "<title> YAIMA, RIIC 4.0 val </title>\n";
   ptr += "<link rel=\"stylesheet\" href=\"index.css\">\n";
   ptr += " </head>\n";
 
@@ -103,7 +106,9 @@ String SendHTML(void) {
   ptr += " <div class=\"content-img\">";
 
   ptr += "             <div class=\"content-txt\">";
-  ptr += "                 <h2> Humedad <br></h2>";
+  ptr += "                 <h2> Humedad <br> ";
+  ptr += String(humedad);
+  ptr += "% </h2>";
   ptr += "            </div>";
   ptr += "             <div class=\"content-1\"></div>";
   ptr += "             <div class=\"content-2\"></div>";
@@ -117,7 +122,9 @@ String SendHTML(void) {
   ptr += " <div class=\"content-img\">";
 
   ptr += "             <div class=\"content-txt\">";
-  ptr += "                 <h2> Temp </h2>";
+  ptr += "                 <h2> Temperatura <br>";
+  ptr += String(tempt);
+  ptr += "</h2>";
   ptr += "             </div>";
   ptr += "             <div class=\"content-1\"></div>";
   ptr += "             <div class=\"content-2\"></div>";
@@ -130,7 +137,9 @@ String SendHTML(void) {
   ptr += " <div class=\"content-img\">";
 
   ptr += "             <div class=\"content-txt\">";
-  ptr += "                 <h2> Nivel de CO<sub>2</sub> </h2>";
+  ptr += "                 <h2> Nivel de CO<sub>2</sub> <br> ";
+  ptr += String(aire);
+  ptr += "</h2>";
 
   ptr += "             </div>";
 
@@ -159,7 +168,9 @@ String SendHTML(void) {
   ptr += "         <td><div class=\"content-all\">";
   ptr += " <div class=\"content-img\">";
   ptr += "             <div class=\"content-txt\">";
-  ptr += "                 <h2> Capacidad<br></h2>";
+  ptr += "                 <h2> Capacidad<br>";
+  ptr += String(level);
+  ptr += "</h2>";
   ptr += "             </div>";
   ptr += "             <div class=\"content-1\"></div>";
   ptr += "             <div class=\"content-2\"></div>";
